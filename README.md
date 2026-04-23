@@ -1,8 +1,8 @@
-# 🗺️ CityCompare France — SAE Outils Décisionnels
+# CityCompare France SAE Outils Décisionnels
 
 Comparateur de villes françaises (>20 000 habitants) avec données en temps réel.
 
-## 📦 Structure du projet
+## Structure du projet
 
 ```
 .
@@ -12,7 +12,7 @@ Comparateur de villes françaises (>20 000 habitants) avec données en temps ré
 └── README.md
 ```
 
-## 🚀 Lancement en local
+## Lancement en local
 
 ```bash
 # 1. Installer les dépendances
@@ -27,41 +27,18 @@ streamlit run app.py
 
 L'application sera accessible sur http://localhost:8501
 
-## ☁️ Déploiement sur Streamlit Community Cloud (gratuit)
+## APIs utilisées
 
-1. Créer un compte sur https://share.streamlit.io
-2. Pousser le projet sur GitHub (repo public ou privé)
-3. Cliquer sur "New app" > sélectionner le repo > choisir `app.py`
-4. Déployer !
+| API | Usage |
+|
+| **Open-Meteo** | Météo temps réel + prévisions 7j 
+| **Open-Meteo Archive** | Climatologie annuelle 
+| **Nominatim (OSM)** | Géocodage ville → lat/lon 
+| **Wikipédia REST** | Résumé + image de la ville 
+| **INSEE Données Locales** | Logement, emploi, démographie 
+| **France Travail (Pôle Emploi)** | Offres d'emploi
 
-> ⚠️ Le fichier CSV est trop volumineux pour GitHub. Deux solutions :
-> - Utiliser Git LFS : `git lfs track "*.csv"`
-> - Héberger le CSV sur un bucket S3/Google Cloud et le télécharger au démarrage
-
-## 📡 APIs utilisées (sans clé pour la plupart)
-
-| API | Usage | Authentification |
-|-----|-------|-----------------|
-| **Open-Meteo** | Météo temps réel + prévisions 7j | ❌ Aucune |
-| **Open-Meteo Archive** | Climatologie annuelle | ❌ Aucune |
-| **Nominatim (OSM)** | Géocodage ville → lat/lon | ❌ Aucune |
-| **Wikipédia REST** | Résumé + image de la ville | ❌ Aucune |
-| **INSEE Données Locales** | Logement, emploi, démographie | ❌ Accès libre |
-| **France Travail (Pôle Emploi)** | Offres d'emploi | 🔑 Clé optionnelle |
-
-### Ajouter l'API France Travail (optionnel)
-
-1. Créer un compte sur https://francetravail.io/
-2. Créer une application et récupérer `client_id` + `client_secret`
-3. Ajouter dans `.streamlit/secrets.toml` :
-   ```toml
-   [france_travail]
-   client_id = "votre_client_id"
-   client_secret = "votre_client_secret"
-   ```
-4. Décommenter la section API dans `app.py`
-
-## 📊 Données affichées
+## Affichage des données 
 
 ### Onglet Général
 - Photo + résumé Wikipedia de la ville
@@ -83,13 +60,3 @@ L'application sera accessible sur http://localhost:8501
 - **Radar chart** multi-critères (population, température, pluie, vent)
 - **Tableau de synthèse** chiffrée côte-à-côte
 
-## 🎨 Design
-
-Interface dark editorial inspirée des dashboards cartographiques modernes :
-- Typographie : Playfair Display (titres) + DM Sans (corps)
-- Palette : fond #0e1117, accents bleu #4f8ef7 et orange #f7824f
-- Graphiques Plotly avec thème sombre cohérent
-
-## 👥 Groupe
-
-Application développée dans le cadre de la SAE Outils Décisionnels.
