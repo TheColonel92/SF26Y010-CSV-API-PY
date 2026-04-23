@@ -542,8 +542,8 @@ def main():
                 rv[slot]=(r1,r2,p1,p2)
                 render_metric("Loyer moyen T2/T3",f"{r1}–{r2} €/mois","DVF / MeilleursAgents",color)
                 render_metric("Prix immobilier",f"{p1:,}–{p2:,} €/m²".replace(",","_").replace("_",""),"DVF",color)
-                pe_url=f"https://candidat.francetravail.fr/offres/recherche?lieux={code[:2]}"
-                render_metric("Offres d'emploi","France Travail →",f"[Voir les offres dép. {code[:2]}]({pe_url})",color)
+                pe_url=f"https://candidat.francetravail.fr/offres/recherche?lieux={code[:5]}&offresPartenaires=true&rayon=0&tri=0"
+                render_metric("Offres d'emploi","France Travail →",f"[Voir les offres com. {code[:5]}]({pe_url})",color)
 
         st.markdown('<div class="section-title">Comparaison loyers & immobilier</div>', unsafe_allow_html=True)
         cats_r=["Loyer min","Loyer max","Prix min €/m²","Prix max €/m²"]
