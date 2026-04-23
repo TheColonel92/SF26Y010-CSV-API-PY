@@ -30,10 +30,10 @@ L'application sera accessible sur http://localhost:8501
 ## APIs utilisées
 
 | API | Usage |
-|
+
 | **Open-Meteo** | Météo temps réel + prévisions 7j 
 | **Open-Meteo Archive** | Climatologie annuelle 
-| **Nominatim (OSM)** | Géocodage ville → lat/lon 
+| **Nominatim (OSM)** | Géocodage ville
 | **Wikipédia REST** | Résumé + image de la ville 
 | **INSEE Données Locales** | Logement, emploi, démographie 
 | **France Travail (Pôle Emploi)** | Offres d'emploi
