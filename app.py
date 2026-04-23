@@ -1,7 +1,6 @@
 """
 SAE Outils Décisionnels Comparateur de Villes Françaises
-Sources : INSEE CSV · Open-Meteo · Nominatim · Wikipédia · Overpass (OSM)
-         · data.enseignementsup-recherche.gouv.fr · France Travail
+Sources : INSEE CSV・Open-Meteo・Nominatim・Wikipédia・Overpass (OSM)・data.enseignementsup-recherche.gouv.fr・France Travail
 """
 # On importe toutes les bibliothèques nécessaires :
 # - streamlit pour l'interface web
@@ -100,7 +99,7 @@ def get_geocode(city_name: str):
         r = requests.get(
             "https://nominatim.openstreetmap.org/search",
             params={"q": f"{city_name}, France", "format": "json", "limit": 1},
-            timeout=8, headers={"User-Agent": "CityCompare-SAE/1.0"},
+            timeout=8, headers={"User-Agent": "Citéoscope-SAE/1.0"},
         )
         data = r.json()
         if data:
@@ -459,7 +458,7 @@ def main():
     # En-tête de la page
     st.markdown("""
     <div>
-      <div class="hero-title">CityCompare<br><em>France</em></div>
+      <div class="hero-title">Citéoscope<br><em>France</em></div>
       <div class="hero-sub">Comparez deux villes · INSEE · Météo</div>
     </div>""", unsafe_allow_html=True)
 
