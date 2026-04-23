@@ -21,7 +21,7 @@ from plotly.subplots import make_subplots
 # On configure l'apparence globale de l'app Streamlit
 # (titre de l'onglet, icône, mise en page large, barre latérale)
 st.set_page_config(
-    page_title="CityCompare France",
+    page_title="Citéoscope France",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -711,8 +711,7 @@ def main():
     st.markdown("""
     <hr class="city-divider">
     <div class="footer">
-      Sources : INSEE · Open-Meteo · Open-Meteo Archive · Nominatim/OSM · Overpass API ·
-      Wikipédia · data.enseignementsup-recherche.gouv.fr · France Travail<br>
+      Sources・INSEE・Open-Meteo・Open-Meteo Archive・Nominatim/OSM・Overpass API・Wikipédia・data.enseignementsup-recherche.gouv.fr・France Travail<br>
       SAE Outils Décisionnels données temps réel via API
     </div>""", unsafe_allow_html=True)
 # Point d'entrée : on lance main() uniquement si le script est exécuté directement
