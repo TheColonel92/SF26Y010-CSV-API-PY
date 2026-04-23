@@ -3,7 +3,6 @@ SAE Outils Décisionnels Comparateur de Villes Françaises
 Sources : INSEE CSV · Open-Meteo · Nominatim · Wikipédia · Overpass (OSM)
          · data.enseignementsup-recherche.gouv.fr · France Travail
 """
-
 # On importe toutes les bibliothèques nécessaires :
 # - streamlit pour l'interface web
 # - pandas/numpy pour manipuler les données
@@ -18,9 +17,7 @@ from datetime import datetime
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-
 # CONFIGURATION DE LA PAGE
-
 # On configure l'apparence globale de l'app Streamlit
 # (titre de l'onglet, icône, mise en page large, barre latérale)
 st.set_page_config(
@@ -29,9 +26,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-
 # INJECTION DU CSS EXTERNE  css/style.css
-
 def load_css(path: str = "css/style.css"):
     """
     Charge un fichier CSS externe et l'injecte dans la page Streamlit.
@@ -43,25 +38,17 @@ def load_css(path: str = "css/style.css"):
         st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
     else:
         st.warning(f"Fichier CSS introuvable : {path}")
-
 # On applique le CSS dès le démarrage de l'app
 load_css()
 
-
 # CONSTANTES GLOBALES
-
-
 # Chemin vers le fichier CSV des populations par communes
 CSV_PATH  = "data/nombre-d-habitants-commune.csv"
-
 # Couleurs des deux villes à comparer
 COLOR_A   = "#4f8ef7"
 COLOR_B   = "#f7824f"
-
-
 # Abréviations des mois, utilisées dans les graphiques climatiques
 MONTHS_FR = ["Jan","Fév","Mar","Avr","Mai","Juin","Juil","Aoû","Sep","Oct","Nov","Déc"]
-
 
 PLOTLY_LAYOUT = dict(
     paper_bgcolor="rgba(0,0,0,0)",
@@ -72,7 +59,6 @@ PLOTLY_LAYOUT = dict(
     margin=dict(l=20, r=20, t=40, b=20),
     legend=dict(bgcolor="rgba(0,0,0,0)", borderwidth=0),
 )
-
 # Ex: 0 = ciel dégagé ☀️, 61/63/65 = pluie 🌧️, 95 = orage ⛈️
 WMO_ICONS = {
     0:"☀️",1:"🌤️",2:"⛅",3:"☁️",
@@ -84,9 +70,7 @@ WMO_ICONS = {
     95:"⛈️",96:"⛈️",99:"⛈️",
 }
 
-
 # CHARGEMENT DES DONNÉES
-
 @st.cache_data(show_spinner=False)
 def load_cities(csv_path: str, min_pop: int = 20_000) -> pd.DataFrame:
     """
@@ -104,12 +88,8 @@ def load_cities(csv_path: str, min_pop: int = 20_000) -> pd.DataFrame:
     # On garde uniquement les communes au-dessus du seuil de population
     latest = latest[latest["valeur"] >= min_pop].sort_values("libelle_commune")
     return latest.reset_index(drop=True)
-
-
-
+         
 # APPELS API EXTERNES
-
-
 @st.cache_data(show_spinner=False, ttl=86400)
 def get_geocode(city_name: str):
     """
@@ -128,8 +108,6 @@ def get_geocode(city_name: str):
     except Exception:
         pass
     return None, None
-
-
 @st.cache_data(show_spinner=False, ttl=3600)
 def get_weather(lat, lon):
     """
@@ -148,8 +126,6 @@ def get_weather(lat, lon):
         return r.json()
     except Exception:
         return None
-
-
 @st.cache_data(show_spinner=False, ttl=86400)
 def get_climate(lat, lon):
     """
@@ -185,8 +161,6 @@ def get_climate(lat, lon):
         ).reset_index()
     except Exception:
         return None
-
-
 @st.cache_data(show_spinner=False, ttl=86400)
 def get_wikipedia(city_name: str):
     """
@@ -201,8 +175,6 @@ def get_wikipedia(city_name: str):
         return d.get("extract",""), d.get("thumbnail",{}).get("source","")
     except Exception:
         return "", ""
-
-
 @st.cache_data(show_spinner=False, ttl=86400)
 def _overpass(lat, lon, radius, tag_key, tag_values) -> list:
     """
@@ -245,14 +217,10 @@ def _overpass(lat, lon, radius, tag_key, tag_values) -> list:
     except Exception:
         return []
 
-
 # FONCTIONS UTILITAIRES
-
-
 def wmo_icon(code):
     """Convertit un code météo WMO en ?. Retourne ? si le code est inconnu."""
     return WMO_ICONS.get(int(code), "🌡️") if code is not None else "?"
-
 def format_pop(n):
     """
     Formate un nombre d'habitants de façon lisible.
@@ -260,7 +228,6 @@ def format_pop(n):
     if n >= 1_000_000: return f"{n/1_000_000:.1f} M"
     if n >= 1_000: return f"{n/1_000:.0f} k"
     return str(int(n))
-
 def safe_cv(cl, col, agg="mean"):
     """
     Calcule une valeur agrégée sur une colonne d'un DataFrame climatique.
@@ -268,7 +235,6 @@ def safe_cv(cl, col, agg="mean"):
     if cl is None: return 0
     try: return cl[col].sum() if agg == "sum" else getattr(cl[col], agg)()
     except: return 0
-
 def render_metric(label, value, sub="", color=None):
     """
     Affiche une "carte métrique" stylisée dans Streamlit.
@@ -284,7 +250,6 @@ def render_metric(label, value, sub="", color=None):
         f'<div class="metric-value" style="{cs}">{value}</div>'
         f'{"<div class=metric-sub>"+sub+"</div>" if sub else ""}'
         f'</div>', unsafe_allow_html=True)
-
 def render_forecast(wd, color):
     """
     Affiche les prévisions météo sur 7 jours sous forme de colonnes journalières.
@@ -312,7 +277,6 @@ def render_forecast(wd, color):
                 # On n'affiche la pluie que si elle est > 0
                 f'{"<div style=font-size:.7rem;color:#7a8299;margin-top:.2rem;>💧 "+str(round(rain,1))+" mm</div>" if rain else ""}'
                 f'</div>', unsafe_allow_html=True)
-
 def norm2(a, b):
     """
     Normalise deux valeurs sur une échelle de 0 à 10 (pour le graphique radar).
@@ -321,11 +285,7 @@ def norm2(a, b):
     mx = max(a, b, 1) 
     return a/mx*10, b/mx*10
 
-
-
 # CONSTRUCTION DES GRAPHIQUES
-
-
 def map_dual(city_a, la, loa, city_b, lb, lob):
     """
     Crée une carte Mapbox affichant les deux villes et une ligne semi-transparente reliant les deux points.
@@ -360,8 +320,6 @@ def map_dual(city_a, la, loa, city_b, lb, lob):
                     borderwidth=1, font=dict(color="#e8eaf0")),
     )
     return fig
-
-
 def map_pois(pois_a, pois_b, city_a, city_b, la, loa, lb, lob, icon_map, c_b=COLOR_B):
     """
     Affiche sur une carte les points d'intérêt (POI) des deux villes.
@@ -403,8 +361,6 @@ def map_pois(pois_a, pois_b, city_a, city_b, la, loa, lb, lob, icon_map, c_b=COL
                     borderwidth=1, font=dict(color="#e8eaf0")),
     )
     return fig
-
-
 def chart_climate(ca, cb, na, nb):
     """
     Génère un graphique en deux parties :
@@ -428,8 +384,6 @@ def chart_climate(ca, cb, na, nb):
             marker_color=color,opacity=0.6),row=2,col=1)
     fig.update_layout(**PLOTLY_LAYOUT, height=480)
     return fig
-
-
 def chart_sunshine(ca, cb, na, nb):
     """
     Génère un histogramme comparant l'ensoleillement moyen mensuel entre les deux villes. 
@@ -445,8 +399,6 @@ def chart_sunshine(ca, cb, na, nb):
     fig.update_layout(**PLOTLY_LAYOUT,height=280,
         yaxis_title="h/jour",title="Ensoleillement moyen mensuel")
     return fig
-
-
 def chart_poi_types(pa, pb, na, nb, icon_map):
     """
     Génère un histogramme comparant le nombre de POI par type entre les deux villes.
@@ -468,8 +420,6 @@ def chart_poi_types(pa, pb, na, nb, icon_map):
     fig.update_layout(**PLOTLY_LAYOUT,height=300,barmode="group",
         yaxis_title="Nb de lieux",title="Répartition par type")
     return fig
-
-
 def chart_radar(na, nb, pop_a, pop_b, tmax_a, tmax_b,
                 rain_a, rain_b, wind_a, wind_b):
     """
@@ -504,10 +454,7 @@ def chart_radar(na, nb, pop_a, pop_b, tmax_a, tmax_b,
     )
     return fig
 
-
-
 # FONCTION PRINCIPALE
-
 def main():
     # En-tête de la page
     st.markdown("""
@@ -563,7 +510,6 @@ def main():
         pop_b = int(city_pops[city_b])      # Population ville B (depuis CSV INSEE)
         code_a= city_codes[city_a]          # Code INSEE ville A
         code_b= city_codes[city_b]          # Code INSEE ville B
-
     # Navigation par onglets
     tabs = st.tabs([
         "Général",
@@ -571,12 +517,9 @@ def main():
         "Logement & Emploi",
         "Comparaison"
     ])
-
-    
     # ONGLET 1 VUE GÉNÉRALE
     # Affiche la carte de localisation, les résumés
     # et quelques métriques clés (population, coordonnées, météo actuelle).
-    
     with tabs[0]:
         st.markdown('<div class="section-title">Vue d\'ensemble</div>', unsafe_allow_html=True)
         # Carte uniquement si les deux villes ont pu être géolocalisées
@@ -603,11 +546,8 @@ def main():
                     render_metric("Météo actuelle",
                         f"{wmo_icon(cw.get('weathercode'))} {cw.get('temperature','--')}°C",
                         f"Vent : {cw.get('windspeed','--')} km/h", color)
-
-    
     # ONGLET 2 MÉTÉO & CLIMAT
     # Prévisions sur 7 jours + résumé de la semaine + climatologie sur 5 ans.
-    
     with tabs[1]:
         st.markdown('<div class="section-title">Prévisions 7 jours</div>', unsafe_allow_html=True)
         f1, f2 = st.columns(2)
@@ -663,15 +603,11 @@ def main():
                         st.info("Données indisponibles")
         else:
             st.markdown('<div class="info-box">📡 Données climatiques indisponibles.</div>', unsafe_allow_html=True)
-
     # ONGLET 3 LOGEMENT & EMPLOI
     # Estimations de loyers et prix immobiliers basées sur la taille de la ville,
     # plus un lien vers les offres d'emploi France Travail.
-    
     with tabs[2]:
         st.markdown('<div class="section-title">Logement & Emploi</div>', unsafe_allow_html=True)
-        
-
         h1, h2 = st.columns(2)
         rv = {}  # Stocke les fourchettes de loyers/prix pour le graphique comparatif
         for col, city, code, pop, color, badge, slot in [
@@ -696,7 +632,6 @@ def main():
                 # Lien direct vers les offres France Travail filtrées sur le code commune
                 pe_url=f"https://candidat.francetravail.fr/offres/recherche?lieux={code[:5]}&offresPartenaires=true&rayon=0&tri=0"
                 render_metric("Offres d'emploi","France Travail →",f"[Voir les offres com. {code[:5]}]({pe_url})",color)
-
         # Graphique comparatif des loyers et prix immobiliers
         st.markdown('<div class="section-title">Comparaison loyers & immobilier</div>', unsafe_allow_html=True)
         cats_r=["Loyer min","Loyer max","Prix min €/m²","Prix max €/m²"]
@@ -706,7 +641,6 @@ def main():
         fig_r.update_layout(**PLOTLY_LAYOUT,height=300,barmode="group",
             title="Estimations immobilières comparées",yaxis_title="€")
         st.plotly_chart(fig_r, use_container_width=True)
-
         # Graphique comparatif des populations
         fig_pop=go.Figure()
         fig_pop.add_trace(go.Bar(x=[city_a],y=[pop_a],name=city_a,marker_color=COLOR_A,width=0.4))
@@ -714,13 +648,10 @@ def main():
         fig_pop.update_layout(**PLOTLY_LAYOUT,height=260,yaxis_title="Habitants",title="Population comparée")
         st.plotly_chart(fig_pop, use_container_width=True)
 
-    
     # ONGLET 4 TABLEAU DE BORD COMPARATIF
     # Graphique radar synthétique + carte de positionnement + tableau récapitulatif.
-    
     with tabs[3]:
         st.markdown('<div class="section-title">Tableau de bord comparatif</div>', unsafe_allow_html=True)
-
         # Récupération des valeurs agrégées pour le radar
         tmax_a = safe_cv(ca, "tmax")          # Temp. max moyenne ville A
         tmax_b = safe_cv(cb, "tmax")          # Temp. max moyenne ville B
@@ -731,14 +662,12 @@ def main():
         # Moyenne du vent sur la semaine
         wind_a = np.mean([x for x in wd_a if x]) if any(wd_a) else 0
         wind_b = np.mean([x for x in wd_b if x]) if any(wd_b) else 0
-
         # Graphique radar clé unique pour éviter les conflits Streamlit
         st.plotly_chart(
             chart_radar(city_a, city_b, pop_a, pop_b, tmax_a, tmax_b, rain_a, rain_b, wind_a, wind_b),
             use_container_width=True,
             key="radar_chart"
         )
-
         # Carte de positionnement géographique (uniquement si les deux villes sont géolocalisées)
         if la and lb:
             st.markdown('<div class="section-title">Positionnement géographique</div>', unsafe_allow_html=True)
@@ -747,7 +676,6 @@ def main():
                 use_container_width=True,
                 key="map_dual"
             )
-
         # Tableau récapitulatif avec toutes les métriques clés côte à côte
         st.markdown('<div class="section-title">Synthèse chiffrée</div>', unsafe_allow_html=True)
         rows=[
@@ -770,7 +698,6 @@ def main():
             rows.append({"Critère":"Précipitations annuelles",
                 city_a:f"{ca['rain'].sum():.0f} mm",
                 city_b:f"{cb['rain'].sum():.0f} mm" if cb is not None else "—"})
-
         # Affichage du tableau avec style sombre personnalisé
         df_s=pd.DataFrame(rows).set_index("Critère")
         st.dataframe(
@@ -779,7 +706,6 @@ def main():
                 .set_table_styles([{"selector":"th","props":[("background","#0e1117"),("color","#7a8299"),("font-size","0.8rem")]}]),
             use_container_width=True,
         )
-
     # Pied de page 
     # Liste des sources de données utilisées dans l'application
     st.markdown("""
@@ -789,8 +715,6 @@ def main():
       Wikipédia · data.enseignementsup-recherche.gouv.fr · France Travail<br>
       SAE Outils Décisionnels données temps réel via API
     </div>""", unsafe_allow_html=True)
-
-
 # Point d'entrée : on lance main() uniquement si le script est exécuté directement
 if __name__ == "__main__":
     main()
