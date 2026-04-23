@@ -1,0 +1,319 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CityCompare France — Feuille de style principale
+   SAE Outils Décisionnels
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ── Variables globales ───────────────────────────────────────────────────── */
+:root {
+    --bg:        #0e1117;
+    --surface:   #161b27;
+    --card:      #1c2333;
+    --border:    #2a3550;
+    --accent-a:  #4f8ef7;
+    --accent-b:  #f7824f;
+    --accent-c:  #a78bfa;
+    --success:   #34d399;
+    --warning:   #fbbf24;
+    --text:      #e8eaf0;
+    --muted:     #7a8299;
+    --radius:    12px;
+    --radius-lg: 18px;
+}
+
+/* ── Overrides globaux ────────────────────────────────────────────────────── */
+html, body, [class*="css"] {
+    font-family: 'DM Sans', sans-serif;
+}
+.main {
+    background: var(--bg);
+    color: var(--text);
+}
+.block-container {
+    padding: 2rem 3rem 4rem;
+    max-width: 1400px;
+}
+header[data-testid="stHeader"] {
+    background: transparent;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-a) 0%, var(--accent-c) 50%, var(--accent-b) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 0.2rem;
+}
+.hero-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+/* ── City badge ───────────────────────────────────────────────────────────── */
+.city-badge {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+.badge-a {
+    background: rgba(79,142,247,0.15);
+    color: var(--accent-a);
+    border: 1px solid rgba(79,142,247,0.3);
+}
+.badge-b {
+    background: rgba(247,130,79,0.15);
+    color: var(--accent-b);
+    border: 1px solid rgba(247,130,79,0.3);
+}
+
+/* ── Metric cards ─────────────────────────────────────────────────────────── */
+.metric-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color .2s, box-shadow .2s;
+}
+.metric-card:hover {
+    border-color: var(--accent-a);
+    box-shadow: 0 0 20px rgba(79,142,247,0.08);
+}
+.metric-label {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+}
+.metric-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+}
+.metric-sub {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+}
+
+/* ── POI / attraction card ────────────────────────────────────────────────── */
+.poi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.7rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    transition: border-color .2s;
+}
+.poi-card:hover { border-color: var(--accent-b); }
+.poi-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+.poi-name {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+}
+.poi-type {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+.poi-dist {
+    font-size: 0.78rem;
+    color: var(--accent-b);
+    margin-top: 0.2rem;
+}
+
+/* ── Formation / école card ───────────────────────────────────────────────── */
+.formation-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.7rem;
+    border-left: 3px solid var(--accent-c);
+    transition: box-shadow .2s;
+}
+.formation-card:hover {
+    box-shadow: 0 0 16px rgba(167,139,250,0.12);
+}
+.formation-name {
+    font-weight: 500;
+    font-size: 0.93rem;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+}
+.formation-type {
+    font-size: 0.75rem;
+    color: var(--accent-c);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+.formation-detail {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+}
+
+/* ── Section titles ───────────────────────────────────────────────────────── */
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--text);
+    border-left: 3px solid var(--accent-a);
+    padding-left: 0.8rem;
+    margin: 2rem 0 1.2rem;
+}
+
+/* ── Dividers ─────────────────────────────────────────────────────────────── */
+.city-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-a), var(--accent-b));
+    border: none;
+    margin: 2rem 0;
+    opacity: 0.4;
+}
+
+/* ── Wikipedia excerpt ────────────────────────────────────────────────────── */
+.wiki-box {
+    background: var(--card);
+    border-left: 3px solid var(--accent-a);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 1rem 1.4rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────────────────────── */
+div[data-testid="stTabs"] button {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+div[data-testid="stTabs"] button[aria-selected="true"] {
+    color: var(--text);
+}
+
+/* ── Select boxes ─────────────────────────────────────────────────────────── */
+div[data-testid="stSelectbox"] label {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+/* ── Spinner ──────────────────────────────────────────────────────────────── */
+.stSpinner > div {
+    border-top-color: var(--accent-a) !important;
+}
+
+/* ── Weather day card ─────────────────────────────────────────────────────── */
+.weather-day {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.9rem;
+    text-align: center;
+    margin: 0.2rem;
+}
+.weather-day .day-name {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+}
+.weather-day .temp-max {
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+}
+.weather-day .temp-min {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+.weather-day .icon {
+    font-size: 1.6rem;
+    margin: 0.3rem 0;
+}
+
+/* ── Info/alert box ───────────────────────────────────────────────────────── */
+.info-box {
+    background: rgba(79,142,247,0.08);
+    border: 1px solid rgba(79,142,247,0.2);
+    border-radius: var(--radius);
+    padding: 0.8rem 1.2rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+}
+
+/* ── Stat pill ────────────────────────────────────────────────────────────── */
+.stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin: 0.2rem;
+}
+
+/* ── Score badge (formation) ──────────────────────────────────────────────── */
+.score-badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+.score-high   { background: rgba(52,211,153,0.15); color: var(--success);  border: 1px solid rgba(52,211,153,0.3); }
+.score-medium { background: rgba(251,191,36,0.15); color: var(--warning);  border: 1px solid rgba(251,191,36,0.3); }
+.score-low    { background: rgba(247,130,79,0.15); color: var(--accent-b); border: 1px solid rgba(247,130,79,0.3); }
+
+/* ── Map container ────────────────────────────────────────────────────────── */
+.map-container {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 1rem;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+.footer {
+    text-align: center;
+    color: #3a4560;
+    font-size: .78rem;
+    padding: 1rem 0;
+}
